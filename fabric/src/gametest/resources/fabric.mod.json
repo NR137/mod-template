@@ -1,0 +1,16 @@
+{
+	"schemaVersion": 1,
+	"id": "example_mod_gametest",
+	"version": "1.0.0",
+	"name": "Example Mod game tests",
+	"environment": "*",
+	"entrypoints": {
+		"fabric-gametest": [
+			"de.nr137.examplemod.fabric.gametest.FabricGameTests"
+		]
+	},
+	"depends": {
+		"example_mod": "*",
+		"fabric-gametest-api-v1": "*"
+	}
+}
