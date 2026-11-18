@@ -3,7 +3,7 @@
 | Folder or file | What it does |
 |---|---|
 | `smoke_test/` | The smoke test with the vanilla client and the vanilla server, and the singleplayer test; see below. |
-| `versions/` | `check_versions.py` compares every version the project uses with the newest one (`./tasks.sh versions`; only Python's standard library, so it also runs outside the dev image). |
+| `versions/` | `check_versions.py` compares every version the project uses with the newest one (`./tasks.sh versions`; only Python's standard library, so it also runs outside the dev image). A repo adds rows for what only it uses in its own `repo_checks.py` next to it, so `check_versions.py` stays the template's. |
 | `new_mod.py` | Only in the template: turns a copy of it into a new mod (see the main README). |
 
 All of them use only Python's standard library and run in the dev image (`docker/Dockerfile`, see the main README).
