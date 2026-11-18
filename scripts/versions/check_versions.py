@@ -1,7 +1,7 @@
 """Every version the project sets, against the newest one there is: Minecraft and its loaders, Mixin, the Gradle
 plugins, the tools of the dev image and CI. Knows the project's rules: Fabric API, NeoForge and NeoForm are compared
 within our Minecraft version, Java is the one Minecraft needs, and Mixin the older of what NeoForge and Fabric Loader
-ship.
+ship. A repo adds its own rows in scripts/versions/repo_checks.py (see "The repo's own" below).
 
 Usage: python3 scripts/versions/check_versions.py   (./tasks.sh versions)
 Exits with 1 when anything can be updated (held and waiting versions don't count). Only the standard library, so it runs anywhere with Python 3 and a network.
@@ -204,10 +204,18 @@ for action, major in sorted(set(re.findall(r'uses: ([\w-]+/[\w-]+)(?:/[\w/-]+)?@
 for runner in sorted(set(re.findall(r'ubuntu-(\d+\.\d+)', workflows))):
 	check('CI', 'GitHub runner ubuntu', runner, newest_lts)
 
+# --- The repo's own -------------------------------------------------------------------------------------------------
+
+# A repo checks what only it uses (data it downloads, extra tools) in scripts/versions/repo_checks.py, with row() and
+# check() and the area 'Repo'; this file stays the template's, so aligning with the template replaces it as it is.
+REPO_CHECKS = ROOT / 'scripts/versions/repo_checks.py'
+if REPO_CHECKS.is_file():
+	exec(compile(REPO_CHECKS.read_text(), str(REPO_CHECKS), 'exec'), globals())
+
 # --- Output -----------------------------------------------------------------------------------------------------------
 
 order = {'error': 0, 'major': 1, 'update': 2, 'wait': 3, 'held': 4, 'current': 5}
-ROWS.sort(key=lambda r: (order[r[4]], ['Minecraft', 'Gradle', 'Tools', 'CI'].index(r[0]), r[1].lower()))
+ROWS.sort(key=lambda r: (order[r[4]], ['Minecraft', 'Gradle', 'Tools', 'CI', 'Repo'].index(r[0]), r[1].lower()))
 header = ('Area', 'Name', 'Used', 'Newest', 'Status', 'Note')
 widths = [max(len(str(r[i])) for r in ROWS + [header]) for i in range(5)]
 for r in [header] + ROWS:
